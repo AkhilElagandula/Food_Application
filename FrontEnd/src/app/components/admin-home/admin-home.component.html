@@ -1,0 +1,103 @@
+<div class="body-container">
+
+  <div class="content text-center">
+    <button mat-button style="margin-right: 10px;background-color: blue;color: aliceblue;" (click)="openForm()"
+      class="btn btn-primary">
+
+      Add Restaurant <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <div class="container mt-4 mb-4" *ngIf="viewAllRestaurants">
+    <div class="row">
+      <div class="box col-lg-3 mt-3" *ngFor="let item of allRestaurants  | paginate: { id: 'list_pagination',
+        itemsPerPage: 8,
+        currentPage: page,
+        totalItems: totalRecords }">
+
+        <img src=".//src//assets//Restaurants//{{item.restaurantImage}}">
+        <mat-card-content>
+          <mat-card-title>
+            <h1 mat-sort-header>{{item.restaurantName}}</h1>
+          </mat-card-title>
+          <p>Location : {{item.location}}</p>
+          <p>Rating : <strong class="badge text-black " style="background-color: gold;"> {{item.rating}}☆</strong>
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+
+          <button mat-raised-button color="primary">
+            <mat-icon>mode_edit</mat-icon>
+          </button>
+          <button mat-raised-button color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+
+      </div>
+    </div>
+    <div style="padding: 20px;">
+      <pagination-controls class="text-center" id="list_pagination" (pageChange)=" page = $event">
+      </pagination-controls>
+    </div>
+  </div>
+
+
+  <div class="container-fluid" *ngIf="viewAddRestaurants">
+    <div class="card">
+      <div class="card-header bg-success">
+        <h2>Add Restaurant Here</h2>
+      </div>
+      <div class="card-body ">
+        <form [formGroup]="restaurantForm" (ngSubmit)="saveRestaurant()">
+          <div class="form-row">
+            <div class="form-group col-8">
+              <label>Restaurant Id</label>
+              <input type="text" formControlName="restaurantId" class="form-control" />
+
+            </div>
+            <div class="form-group col-8 ">
+              <label>Restaurant Name</label>
+              <input type="text" formControlName="restaurantName" class="form-control" />
+            </div>
+            <div class="form-group col-8">
+              <label>Restaurant Location</label>
+              <input type="text" formControlName="location" class="form-control" />
+
+            </div>
+            <div class="form-group col-8">
+              <label>Restaurant Rating</label>
+              <input type="text" formControlName="rating" class="form-control" />
+            </div> 
+            <div class="form-group col-8" formGroupName="cuisine">
+              <div class="form-group col-8" >
+              <h2>Cuisine :</h2>
+              <label>cuisine Name</label>
+              <input type="text"  class="form-control" formControlName="cuisineName" />
+            </div>
+            </div>
+            <!-- <div formArrayName="cuisine">
+              <div *ngFor="let item of restaurantForm.get('cuisine').value; let i = index"  
+              formGroupName="{{i}}" class="margin-top">
+                <div class="col-md-5">
+                  <label>Cuisine Name</label>
+                  <input type="text" formControlName="cuisineName" class="form-control" />
+                </div> -->
+            <!-- <div class="display-buttons d-flex">
+                  <div class="col-md-2  remove-padding-right">
+                    <a (click)="removeCuisine(i)"><span class="btn btn-sm btn-danger">Remove</span></a>
+                  </div>
+                </div> -->
+            <!-- </div> -->
+            <!-- <div class="col-md-12 pt-2">
+              <a class="btn btn-sm btn-success" (click)="addCuisine()">+Add </a>
+            </div> -->
+            <!-- </div>  -->
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-success " [disabled]="restaurantForm.invalid">Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

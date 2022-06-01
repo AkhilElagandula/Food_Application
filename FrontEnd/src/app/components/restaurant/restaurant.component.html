@@ -1,0 +1,138 @@
+<div class="banner">
+    <!-- <div class="content" style="position: static;">
+        <h1 class="mb-5">Fresh Cooked Food <br /> At Your Door.</h1>
+    </div> -->
+
+
+</div>
+<div class="body">
+    <div class="search-container d-flex ">
+        <div>
+            <select class="btn-lg btn-primary  dropdown" (change)="selectChangeHandler($event)"
+                style="position: static;" (click)="getByLocation(locationText)">
+                <option>Select</option>
+                <option>Mumbai</option>
+                <option>Hyderabad</option>
+                <option>Nagpur</option>
+                <option>Goa</option>
+                <option>Delhi</option>
+                <option>Banglore</option>
+            </select>
+        </div>
+
+        <div>
+            <form class="search-bar">
+                <mat-form-field class="example-full-width" style="width: 400px; margin:0 24px;">
+                    <span matPrefix> </span>
+                    <input type="text" matInput placeholder="Search for Restaurant and Cuisine" name="search"
+                        [(ngModel)]="searchBarText">
+                    <button matSuffix mat-button>
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </mat-form-field>
+
+            </form>
+        </div>
+    </div>
+    <!-- <div class="carousel" style="margin: 10px;">
+    <owl-carousel-o [options]="customOptions" class="carousel">
+        <ng-container *ngFor="let cuisine of allCuisines" style="margin: 0 50px;">
+            <ng-template class="carousel" carouselSlide >
+                <img src=".//src//assets//Cuisines//{{cuisine.cuisineImage}}" width="90px" height="180px" >
+                <h1 class="text-center" style="margin: 10px 0;">{{cuisine.cuisineName}}</h1>
+            </ng-template>
+        </ng-container>
+    </owl-carousel-o>
+</div>  -->
+
+    <!-- Container to display all the restaurants and can do filter  -->
+    <div *ngIf="(allRestaurants | filter : searchBarText) as result">
+        <div *ngIf="result.length == 0" class="text-center">
+            <!-- <h3 style="color: rgb(240, 68, 68);font-size:30px;"> No Such Restaurants/Cuisines.. </h3> -->
+            <img src=".//src//assets//norecords.png" >
+        </div>
+    </div>
+    <div class="container mt-4 mb-4 darkMode" *ngIf="disableAll">
+        <div class="row">
+            <div class="box col-lg-3 mt-3" *ngFor="let item of allRestaurants | filter : searchBarText | paginate: { id: 'list_pagination',
+        itemsPerPage: 8,
+        currentPage: page,
+        totalItems: totalRecords }">
+
+
+                <img (click)="getData(item)" src=".//src//assets//Restaurants//{{item.restaurantImage}}">
+                <mat-card-content>
+                    <mat-card-title>
+                        <h1 mat-sort-header (click)="getData(item)">{{item.restaurantName}}</h1>
+                    </mat-card-title>
+                    <p>Location : {{item.location}}</p>
+                    <p *ngIf="item.rating >= 4">Rating : <strong class="badge text-black "
+                            style="background-color: green;">
+                            {{item.rating}}☆</strong>
+                    <p *ngIf="item.rating >= 3 && item.rating < 4">Rating : <strong class="badge text-black "
+                            style="background-color: gold;"> {{item.rating}}☆</strong>
+                    <p *ngIf="item.rating >= 1 && item.rating < 3">Rating : <strong class="badge text-black "
+                            style="background-color: red;"> {{item.rating}}☆</strong>
+                    </p>
+                </mat-card-content>
+
+                <mat-card-actions>
+                    <button mat-raised-button color="accent" (click)="addToFavourites(item)">
+                        <mat-icon>favorite</mat-icon>
+                    </button>
+                    <button mat-raised-button color="primary" (click)="getData(item)">View</button>
+                </mat-card-actions>
+
+            </div>
+        </div>
+        <div style="padding: 20px;">
+            <pagination-controls class="text-center" id="list_pagination" (pageChange)=" page = $event">
+            </pagination-controls>
+        </div>
+    </div>
+
+    <!--  Container to display all the restaurants by locations -->
+    <div class="container mt-4 mb-4" *ngIf="disableLocation">
+        <div class="row">
+            <div class="box col-lg-3 mt-3" *ngFor="let item of restaurantsByLocation | filter : searchBarText  | paginate: { id: 'list_pagination1',
+        itemsPerPage: 4,
+        currentPage: page,
+        totalItems: totalRecordsByLocation }">
+
+                <img (click)="getData(item)" src=".//src//assets//Restaurants//{{item.restaurantImage}}" alt="">
+                <!-- 
+            <img (click)="getData(item)"
+                src="http:/localhost:5555/foodieApp/restaurantImage/restaurantimages/{{item.restaurantName}}.jpg" /> -->
+
+                <!-- {{item.restaurantImage}} -->
+                <mat-card-content>
+                    <mat-card-title>
+                        <h1 mat-sort-header (click)="getData(item)">{{item.restaurantName}}</h1>
+                    </mat-card-title>
+                    <p>Location : {{item.location}}</p>
+                    <p *ngIf="item.rating >= 4">Rating : <strong class="badge text-black "
+                            style="background-color: green;">
+                            {{item.rating}}☆</strong>
+                    <p *ngIf="item.rating >= 3 && item.rating < 4">Rating : <strong class="badge text-black "
+                            style="background-color: gold;"> {{item.rating}}☆</strong>
+                    <p *ngIf="item.rating >= 1 && item.rating < 3">Rating : <strong class="badge text-black "
+                            style="background-color: red;"> {{item.rating}}☆</strong>
+                    </p>
+                </mat-card-content>
+                <mat-card-actions>
+
+                    <button mat-raised-button color="accent" (click)="addToFavourites(item)">
+                        <mat-icon>favorite</mat-icon>
+                    </button>
+                    <button mat-raised-button color="primary" (click)="getData(item)">View</button>
+                </mat-card-actions>
+
+            </div>
+
+        </div>
+        <div style="padding: 20px;">
+            <pagination-controls class="text-center" id="list_pagination1" (pageChange)=" page = $event">
+            </pagination-controls>
+        </div>
+    </div>
+</div>
